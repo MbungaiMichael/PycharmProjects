@@ -1,0 +1,6 @@
+print('Welcome to the tip calculator')
+bill = float(input('what was your bill:$'))
+num_pipo = float(input('how many people were present? : '))
+tip = float(input('what tip would you like to give ? 10$, 12$ or 15$ : '))
+total_pay = round(((bill/num_pipo) + tip/100),2)
+print('your pay per person is : $',total_pay)
