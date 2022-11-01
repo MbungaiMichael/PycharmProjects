@@ -1,0 +1,11 @@
+# findidng two unknown
+print('enter the value for a,b,z,c ,d and p for the first and second eqn')
+a = int(input())
+b = int(input())
+d = int(input())
+c = int(input())
+z = int(input())
+f = int(input())
+y = float((c*d)-(f*a))/((b*c)-(z*a))
+x = float((d-(b*y))/a)
+print(f'The two unknowns are:{x} and {y}')
