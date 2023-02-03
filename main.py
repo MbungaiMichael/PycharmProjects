@@ -1,36 +1,53 @@
-# caesar cipher program
-# to encrypt and decrypt in one function
-
-alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-            'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-
-# using three parameters shift,direction and text.
-# we get the text and shift by a certain number for encoding and vice versa for decoding.
+from turtle import Screen
+import time
+from snake import Snake
+from fodd import Food
+from scoreboard import Scoreboard
 
 
-def caesar(shift, direction, text):
-    stringing = ""
-    if direction == 'decode':
-        shift *= -1
-    for i in text:
-        if i in alphabet:
-            position = alphabet.index(i)
-            new_position = position + shift
-            stringing += alphabet[new_position]
-        else:
-            stringing += i
-    print(f"The {direction}d word is {stringing}")
+screen = Screen()
+screen.setup(width=650, height=650)
+screen.bgcolor('black')
+screen.title("Snake game")
+screen.tracer(0)
+
+# creates a snake
+snake = Snake()
+food = Food()
+score = Scoreboard()
 
 
-should_start = True
-while should_start:
-    Direction = input("Type 'encode' to encrypt and 'decode' to decrypt:\n").lower()
-    Text = input('Enter your message:\n').lower()
-    Shift_num = int(input('insert the shift number:\n'))
-    Shift_num = Shift_num % 26
+screen.listen()
+screen.onkey(snake.up, "Up")
+screen.onkey(snake.down, "Down")
+screen.onkey(snake.lefts, "Left")
+screen.onkey(snake.rights,  "Right")
 
-    caesar(shift=Shift_num, direction=Direction, text=Text)
-    con = input("do you want to continue 'yes' or 'no': ").lower()
-    if con == 'no':
-        should_start = False
-        print('goodbye...')
+# snake moves
+game_on = True
+while game_on:
+    screen.update()
+    time.sleep(0.1)
+    snake.move()
+
+    # detect collision with the food
+
+    if snake.head.distance(food) < 14:
+        score.increase_score()
+        snake.extend()
+        food.refresh()
+
+    # detect collision with the wall
+
+    if snake.head.xcor() > 325 or snake.head.xcor() < -320 or snake.head.ycor() > 325 or snake.head.ycor() < -320:
+        game_on = False
+        score.game_over()
+
+    # detect collision with the snake body
+    for segmen in snake.segmens[1:]:
+        if snake.head.distance(segmen) < 10:
+            game_on = False
+            score.game_over()
+
+screen.exitonclick()
+ 
